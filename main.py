@@ -1,5 +1,4 @@
 #imports
-import time
 import pymysql
 
 #MySQL
