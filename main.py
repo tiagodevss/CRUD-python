@@ -1,5 +1,9 @@
 #imports
 import pymysql
+import InterfaceCRUD
+
+#PySimpleGUI
+InterfaceCRUD
 
 #MySQL
 conexão = pymysql.connect(
@@ -17,15 +21,11 @@ opçãoInicial = input("\nDigite o número da opção desejada: ")
 
 if opçãoInicial == "1":
     print('Certo, você escolheu a opção: "Ver clientes Cadastrados"')
-    cursor.execute("SELECT * FROM dados_do_cliente")
-    valoresLidos = cursor.fetchall()[0]
+    selecionardados = cursor.execute("SELECT * FROM dados_do_cliente ORDER BY id ASC")
+    valoresLidos = cursor.fetchall()
+    for (id, nome, idade, endereço, whatsapp) in valoresLidos:
+        print("|ID|======|NOME|=====|IDADE|======|ENDEREÇO|======|WHATSAPP|======\n{} |===| {} |===| {} Anos |===| {} |===| {}".format(id, nome, idade, endereço, whatsapp))
 
-    nome1 = valoresLidos[0]
-    idade1 = valoresLidos[1]
-    endereço1 = valoresLidos[2]
-    whatsapp1 = valoresLidos[3]
-
-    print(nome1, idade1, endereço1, whatsapp1)
 
 if opçãoInicial == "2":
     print('Certo, você escolheu a opção: "Cadastrar novo cliente"')
@@ -51,7 +51,24 @@ if opçãoInicial == "2":
 
 if opçãoInicial == "3":
     print('Certo, você escolheu a opção: "Excluir cliente"')
-    resposta3 = input("Qual o nome da pessoa que você gostaria de excluir da tabela? ")
+    resposta3 = input("Qual o ID da pessoa que você gostaria de excluir da tabela? ")
+    cursor3 = "DELETE FROM dados_do_cliente WHERE id = %s"
+    dados3 = []
+    id = str(resposta3)
+    dados3.append(id)
+    cursor.execute(cursor3, dados3)
+    conexão.commit()
+    print("Cliente excluído com sucesso!")
+    
 
 if opçãoInicial == "4":
-    print('Certo, você escolheu a opção: "Atualizar cadastro"')
+    print('Certo, você escolheu a opção: "Atualizar cadastro"\n')
+    id4 = input("Qual o ID do cadastro que você quer atualizar? ")
+    resposta4 = input("Qual informação você quer atualizar? \n1 - Nome\n2 - Idade\n3 - Endereço\n4 - Whatsapp\n\nResponda:")
+    cursor4 = "UPDATE FROM dados_do_cliente WHERE id = %s"
+    dados4 = []
+    id = str(id4)
+    dados4.append(id)
+    cursor.execute(cursor4, dados4)
+    conexão.commit()
+    print("Cliente atualizado com sucesso!")
